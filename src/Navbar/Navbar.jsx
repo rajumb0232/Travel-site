@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-// Option component: represents a single navigation item.
-// It accepts a name, style modifiers (scrolled, mobile), an optional list of dropdown items,
-// and an onClick handler for navigation.
 export const Option = ({ name, scrolled, mobile, dropdownItems, onClick }) => {
   const baseClass = `cursor-pointer hover:underline ${
     mobile
@@ -14,7 +11,6 @@ export const Option = ({ name, scrolled, mobile, dropdownItems, onClick }) => {
 
   return (
     <li className="relative group">
-      {/* Attach onClick to trigger navigation */}
       <span className={baseClass} onClick={onClick}>
         {name}
       </span>
@@ -44,7 +40,6 @@ export const Option = ({ name, scrolled, mobile, dropdownItems, onClick }) => {
                   ? "hover:bg-gray-300"
                   : "hover:bg-gray-600"
               }`}
-              // Optionally, you can attach onClick here if you want dropdown items to trigger navigation
               onClick={onClick}
             >
               {item}
@@ -56,14 +51,12 @@ export const Option = ({ name, scrolled, mobile, dropdownItems, onClick }) => {
   );
 };
 
-// Logo component: displays one of two logos based on whether the mobile menu is open or the page is scrolled.
 const Logo = ({ isOpen, scrolled }) => {
   const src =
     isOpen || scrolled ? "/logo-trip-buddy-dark.png" : "/logo-trip-buddy4.png";
   return <img src={src} alt="Brand Logo" className="h-10" />;
 };
 
-// DesktopNav component: displays the navigation options for desktop view.
 const DesktopNav = ({ scrolled, onNavClick }) => (
   <ul className="hidden md:flex space-x-6">
     <Option name="Home" scrolled={scrolled} onClick={() => onNavClick("hero")} />
@@ -84,7 +77,6 @@ const DesktopNav = ({ scrolled, onNavClick }) => (
   </ul>
 );
 
-// DesktopAuthButtons component: renders "Login" and "Register" buttons for desktop.
 const DesktopAuthButtons = ({ scrolled }) => (
   <div className="hidden md:flex space-x-4">
     {["Login", "Register"].map((btn) => (
@@ -102,7 +94,6 @@ const DesktopAuthButtons = ({ scrolled }) => (
   </div>
 );
 
-// MobileMenuButton component: hamburger button for mobile navigation.
 const MobileMenuButton = ({ isOpen, toggleMenu, scrolled }) => (
   <div className="md:hidden flex items-center">
     <button onClick={toggleMenu} className="focus:outline-none">
@@ -133,7 +124,6 @@ const MobileMenuButton = ({ isOpen, toggleMenu, scrolled }) => (
   </div>
 );
 
-// MobileNav component: displays the mobile navigation menu.
 const MobileNav = ({ scrolled, onNavClick }) => (
   <div className="mt-3 border-t transition-colors duration-300 bg-white border-black">
     <ul className="flex flex-col space-y-2 p-4">
@@ -182,12 +172,10 @@ const MobileNav = ({ scrolled, onNavClick }) => (
   </div>
 );
 
-// Navbar component: the top navigation bar that adjusts styles based on scroll state and toggles the mobile menu.
 const Navbar = ({ onNavClick }) => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Update 'scrolled' state based on window scroll position.
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > window.innerHeight * 0.15);

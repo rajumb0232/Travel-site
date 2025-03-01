@@ -1,4 +1,3 @@
-// LandingPage.jsx
 import React, { useRef } from "react";
 import Navbar from "../Navbar/Navbar";
 import Hero from "./Components/Hero";

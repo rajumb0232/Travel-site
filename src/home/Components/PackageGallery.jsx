@@ -77,7 +77,6 @@ const PackageGallery = forwardRef((props, ref) => {
     }
   ];
 
-  // Generate star rating display
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;

@@ -1,8 +1,6 @@
-// Hero.jsx
 import React, { useState, useEffect, forwardRef } from 'react';
 
-// props is used for the navigation callback
-const Hero = forwardRef((props, ref) => {
+const Hero = forwardRef(({ onNavClick }, ref) => {
   // List of countries to display
   const countries = ["USA", "India", "France", "Germany", "Brazil", "Japan"];
   
@@ -30,7 +28,10 @@ const Hero = forwardRef((props, ref) => {
         <h1 className="text-5xl md:text-8xl font-bold text-white mb-4">
           Visit {countries[currentCountryIndex]}
         </h1>
-        <button className="mt-8 bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition-colors">
+        <button
+          className="mt-8 bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition-colors"
+          onClick={() => onNavClick("book")}
+        >
           Book Now
         </button>
       </div>

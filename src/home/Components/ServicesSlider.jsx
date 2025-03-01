@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef } from 'react';
 
 const ServicesSlider = forwardRef((props, ref) => {
-  // Array of services offered by the company
+  // sample data
   const services = [
     {
       id: 1,
@@ -65,12 +65,9 @@ const ServicesSlider = forwardRef((props, ref) => {
     }
   ];
 
-  // State to track the current slide (represents the index of the first visible service)
   const [currentSlide, setCurrentSlide] = useState(0);
-  // State to control how many services to display per slide based on screen size
   const [servicesPerSlide, setServicesPerSlide] = useState(3);
 
-  // Update servicesPerSlide based on window width
   useEffect(() => {
     const updateServicesPerSlide = () => {
       if (window.innerWidth < 768) {
@@ -87,36 +84,29 @@ const ServicesSlider = forwardRef((props, ref) => {
     return () => window.removeEventListener('resize', updateServicesPerSlide);
   }, []);
 
-  // Reset current slide if servicesPerSlide changes (to avoid out-of-bound slides)
   useEffect(() => {
     setCurrentSlide(0);
   }, [servicesPerSlide]);
 
-  // Calculate the total number of possible slides
   const totalSlides = Math.ceil(services.length / servicesPerSlide);
 
-  // Function to handle sliding to the next set of services
   const handleNextSlide = () => {
     setCurrentSlide(prev => (prev + 1) % totalSlides);
   };
 
-  // Function to handle sliding to the previous set of services
   const handlePrevSlide = () => {
     setCurrentSlide(prev => (prev - 1 + totalSlides) % totalSlides);
   };
 
-  // Get the current set of services to display
   const getCurrentServices = () => {
     const startIndex = currentSlide * servicesPerSlide;
     return services.slice(startIndex, startIndex + servicesPerSlide);
   };
 
-  // Get indicator for which slide we're on
   const getSlideIndicator = () => {
     return `${currentSlide + 1}/${totalSlides}`;
   };
 
-  // Determine grid columns class based on servicesPerSlide
   const gridColsClass =
     servicesPerSlide === 1
       ? 'grid-cols-1'

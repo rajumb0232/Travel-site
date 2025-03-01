@@ -1,4 +1,5 @@
 import React, { forwardRef, useState } from 'react';
+import BookingAlert from './BookingAlert';
 
 const BookYourTrip = forwardRef((props, ref) => {
   const [bookingData, setBookingData] = useState({
@@ -8,6 +9,7 @@ const BookYourTrip = forwardRef((props, ref) => {
     endDate: '',
     description: ''
   });
+  const [showBookingAlert, setShowBookingAlert] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -18,12 +20,24 @@ const BookYourTrip = forwardRef((props, ref) => {
   };
 
   const submitBooking = () => {
+    if (!validateInput()) {
+      alert('Please fill in all the fields.');
+    }
+    else {
     console.log('Booking submitted:', bookingData);
-    // Typically, you would send the data to a server here.
+    setShowBookingAlert(true);
+    }
+  };
+
+  const validateInput = () => {
+    const { destination, persons, startDate, endDate } = bookingData;
+    return destination && persons && startDate && endDate;
   };
 
   return (
     <section className="max-w-6xl mx-auto p-4 sm:p-6 my-10" ref={ref}>
+      {showBookingAlert && <BookingAlert onClose={() => setShowBookingAlert(false)} />}
+      
       <div className="py-5 flex flex-col lg:flex-row rounded-lg overflow-hidden">
         <div className="w-full lg:w-1/2 mb-5">
           <img 
