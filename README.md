@@ -1,14 +1,14 @@
 # Travel Site
 A simple SPA using ReactJS and Tailwind CSS
----
 
-## Installation
+
+### Installation
 
 ``` bash
 git clone https://github.com/rajumb0232/Travel-site.git
 ```
 
-## Run
+### Run
 ``` bash
 npm run dev
 ```
