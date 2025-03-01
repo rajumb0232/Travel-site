@@ -1,9 +1,46 @@
-import React from 'react'
+// LandingPage.jsx
+import React, { useRef } from "react";
+import Navbar from "../Navbar/Navbar";
+import Hero from "./Components/Hero";
+import BookYourTrip from "./Components/BookYourTrip";
+import PackageGallery from "./Components/PackageGallery";
+import ServicesSlider from "./Components/ServicesSlider";
 
 const LandingPage = () => {
-  return (
-    <div>LandingPage</div>
-  )
-}
+  const heroRef = useRef(null);
+  const bookYourTripRef = useRef(null);
+  const packagesRef = useRef(null);
+  const servicesRef = useRef(null);
 
-export default LandingPage
+  const scrollToSection = (section) => {
+    console.log("scrolling...");
+    switch (section) {
+      case "hero":
+        heroRef.current?.scrollIntoView({ behavior: "smooth",  });
+        break;
+      case "book":
+        bookYourTripRef.current?.scrollIntoView({ behavior: "smooth" });
+        break;
+      case "packages":
+        packagesRef.current?.scrollIntoView({ behavior: "smooth" });
+        break;
+      case "services":
+        servicesRef.current?.scrollIntoView({ behavior: "smooth" });
+        break;
+      default:
+        break;
+    }
+  };
+
+  return (
+    <>
+      <Navbar onNavClick={scrollToSection} />
+      <Hero ref={heroRef} onNavClick={scrollToSection} />
+      <BookYourTrip ref={bookYourTripRef} onNavClick={scrollToSection} />
+      <PackageGallery ref={packagesRef} onNavClick={scrollToSection} />
+      <ServicesSlider ref={servicesRef} onNavClick={scrollToSection} />
+    </>
+  );
+};
+
+export default LandingPage;
