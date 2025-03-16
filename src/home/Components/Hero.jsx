@@ -1,24 +1,24 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import React, { useState, useEffect, forwardRef } from "react";
 
-const Hero = forwardRef(({ onNavClick }, ref) => {
+const Hero = () => {
   // List of countries to display
   const countries = ["USA", "India", "France", "Germany", "Brazil", "Japan"];
-  
+
   // State to keep track of the current country index
   const [currentCountryIndex, setCurrentCountryIndex] = useState(0);
 
   // Change the country index every 0.3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentCountryIndex(prev => (prev + 1) % countries.length);
+      setCurrentCountryIndex((prev) => (prev + 1) % countries.length);
     }, 300);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div
-      ref={ref} // Attach the forwarded ref to the outer div
       className="relative h-screen w-full bg-cover bg-center bg-[url('/travel-theme-image.webp')]"
+      id="hero"
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
@@ -37,6 +37,6 @@ const Hero = forwardRef(({ onNavClick }, ref) => {
       </div>
     </div>
   );
-});
+};
 
 export default Hero;

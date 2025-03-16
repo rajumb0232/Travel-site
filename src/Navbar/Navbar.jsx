@@ -1,215 +1,131 @@
 import React, { useState, useEffect } from "react";
 
-export const Option = ({ name, scrolled, mobile, dropdownItems, onClick }) => {
-  const baseClass = `cursor-pointer hover:underline ${
-    mobile
-      ? "block text-black hover:text-gray-700"
-      : scrolled
-      ? "text-gray-800 hover:text-gray-600"
-      : "text-white hover:text-gray-200"
-  }`;
 
-  return (
-    <li className="relative group">
-      <span className={baseClass} onClick={onClick}>
+const getTextColor = (scrolled, mobile) => {
+  if (mobile) return "text-black hover:text-gray-700"; 
+  return scrolled ? "text-gray-800 hover:text-gray-600" : "text-white hover:text-gray-200"; 
+};
+
+const getDropdownBg = (scrolled, mobile) => {
+  if (mobile) return "bg-transparent"; 
+  return scrolled ? "bg-white/90 text-black" : "bg-black/60 text-white";
+};
+
+export const Option = ({ name, scrolled, mobile, dropdownItems, href }) => (
+  <li className="relative group">
+    {href ? (
+      <a href={href} className={`cursor-pointer hover:underline block ${getTextColor(scrolled, mobile)}`}>
         {name}
-      </span>
-      {dropdownItems && dropdownItems.length > 0 && (
-        <ul
-          className={
-            mobile
-              ? `mt-2 ml-4 flex flex-col ${
-                  scrolled ? "bg-gray-100 text-gray-800" : "bg-white text-black"
-                }`
-              : `absolute left-0 top-full w-40 ${
-                  scrolled
-                    ? "bg-gray-100 text-gray-800"
-                    : "bg-gray-900/50 text-white"
-                } hidden group-hover:flex flex-col`
-          }
-        >
-          {dropdownItems.map((item) => (
-            <li
-              key={item}
-              className={`px-4 py-2 cursor-pointer ${
-                mobile
-                  ? scrolled
-                    ? "hover:bg-gray-300"
-                    : "hover:bg-gray-600"
-                  : scrolled
-                  ? "hover:bg-gray-300"
-                  : "hover:bg-gray-600"
-              }`}
-              onClick={onClick}
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
-      )}
-    </li>
-  );
+      </a>
+    ) : (
+      <span className={`cursor-pointer hover:underline block ${getTextColor(scrolled, mobile)}`}>{name}</span>
+    )}
+
+    {dropdownItems?.length > 0 && (
+      <ul
+        className={`absolute left-0 top-full w-40 hidden group-hover:flex flex-col transition-opacity duration-300 ${
+          mobile ? "block mt-2 ml-4 space-y-2" : "group-hover:flex"
+        } ${getDropdownBg(scrolled, mobile)} rounded-md shadow-lg`}
+      >
+        {dropdownItems.map((item) => (
+          <li key={item} className="px-4 py-2 cursor-pointer hover:bg-gray-300">
+            {item}
+          </li>
+        ))}
+      </ul>
+    )}
+  </li>
+);
+
+const Logo = ({ isOpen, scrolled }) => (
+  <img src={isOpen || scrolled ? "/logo-trip-buddy-dark.png" : "/logo-trip-buddy4.png"} alt="Brand Logo" className="h-10" />
+);
+
+const AuthButtons = ({ scrolled, isMobile }) => {
+  const baseClass = `border px-4 py-1.5 rounded transition-colors duration-300 w-full md:w-auto`;
+  const dynamicClass = scrolled || isMobile
+    ? "border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white"
+    : "border-white text-white hover:bg-white hover:text-gray-800";
+  return ["Login", "Register"].map((btn) => (
+    <button key={btn} className={`${baseClass} ${dynamicClass}`}>{btn}</button>
+  ));
 };
 
-const Logo = ({ isOpen, scrolled }) => {
-  const src =
-    isOpen || scrolled ? "/logo-trip-buddy-dark.png" : "/logo-trip-buddy4.png";
-  return <img src={src} alt="Brand Logo" className="h-10" />;
+const navItems = {
+  Home: { id: "hero", dropdownItems: undefined },
+  Book: { id: "book", dropdownItems: undefined },
+  Packages: { id: "packages", dropdownItems: ["United States", "India", "France", "Germany"] },
+  Services: { id: "services", dropdownItems: undefined },
+  Gallery: { id: "gallery", dropdownItems: undefined },
+  AboutUs: { id: "about-us", dropdownItems: undefined },
 };
 
-const DesktopNav = ({ scrolled, onNavClick }) => (
+const NavLinks = ({ scrolled, mobile }) => (
+  <>
+    {Object.entries(navItems).map(([section, sectionAttr]) => (
+      <Option key={section} name={section} scrolled={scrolled} mobile={mobile} href={`#${sectionAttr.id}`} dropdownItems={sectionAttr.dropdownItems} />
+    ))}
+  </>
+);
+
+
+const DesktopNav = ({ scrolled }) => (
   <ul className="hidden md:flex space-x-6">
-    <Option name="Home" scrolled={scrolled} onClick={() => onNavClick("hero")} />
-    <Option name="Book" scrolled={scrolled} onClick={() => onNavClick("book")} />
-    <Option
-      name="Packages"
-      scrolled={scrolled}
-      dropdownItems={["United States", "India", "France", "Germany"]}
-      onClick={() => onNavClick("packages")}
-    />
-    <Option
-      name="Services"
-      scrolled={scrolled}
-      onClick={() => onNavClick("services")}
-    />
-    <Option name="Gallery" scrolled={scrolled} />
-    <Option name="About" scrolled={scrolled} />
+    <NavLinks scrolled={scrolled} />
   </ul>
 );
 
-const DesktopAuthButtons = ({ scrolled }) => (
-  <div className="hidden md:flex space-x-4">
-    {["Login", "Register"].map((btn) => (
-      <button
-        key={btn}
-        className={`border px-4 py-1.5 rounded transition-colors duration-300 ${
-          scrolled
-            ? "border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white"
-            : "border-white text-white hover:bg-white hover:text-gray-800"
-        }`}
-      >
-        {btn}
-      </button>
-    ))}
-  </div>
-);
-
-const MobileMenuButton = ({ isOpen, toggleMenu, scrolled }) => (
-  <div className="md:hidden flex items-center">
-    <button onClick={toggleMenu} className="focus:outline-none">
-      <svg
-        className="w-6 h-6 transition-transform duration-300"
-        fill="none"
-        stroke={isOpen ? "black" : scrolled ? "black" : "white"}
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {isOpen ? (
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        ) : (
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        )}
-      </svg>
-    </button>
-  </div>
-);
-
-const MobileNav = ({ scrolled, onNavClick }) => (
-  <div className="mt-3 border-t transition-colors duration-300 bg-white border-black">
+const MobileNav = ({ scrolled }) => (
+  <div className="mt-3 border-t bg-white border-black transition-colors duration-300">
     <ul className="flex flex-col space-y-2 p-4">
-      <Option
-        name="Home"
-        scrolled={scrolled}
-        mobile
-        onClick={() => onNavClick("hero")}
-      />
-      <Option
-        name="Book"
-        scrolled={scrolled}
-        mobile
-        onClick={() => onNavClick("book")}
-      />
-      <Option
-        name="Packages"
-        scrolled={scrolled}
-        mobile
-        dropdownItems={["United States", "India", "France", "Germany"]}
-        onClick={() => onNavClick("packages")}
-      />
-      <Option
-        name="Services"
-        scrolled={scrolled}
-        mobile
-        onClick={() => onNavClick("services")}
-      />
-      <Option name="Gallery" scrolled={scrolled} mobile />
-      <Option name="About" scrolled={scrolled} mobile />
+      <NavLinks scrolled={scrolled} mobile />
     </ul>
-    <div className="flex flex-col space-y-2 p-4 border-t transition-colors duration-300">
-      {["Login", "Register"].map((btn) => (
-        <button
-          key={btn}
-          className={`border px-4 py-1.5 rounded transition-colors duration-300 w-full text-center ${
-            scrolled
-              ? "border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white"
-              : "border-white text-white hover:bg-white hover:text-gray-800"
-          }`}
-        >
-          {btn}
-        </button>
-      ))}
+    <div className="flex flex-col space-y-2 p-4 border-t">
+      <AuthButtons scrolled={scrolled} isMobile={true} />
     </div>
   </div>
 );
 
-const Navbar = ({ onNavClick }) => {
+const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > window.innerHeight * 0.15);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.15);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleMenu = () => setIsOpen((prev) => !prev);
-
   return (
     <nav
       className={`p-3 w-full fixed z-40 transition-all duration-300 border-b ${
-        isOpen
-          ? "bg-white border-black"
-          : scrolled
-          ? "bg-white/90 border-white/90"
-          : "bg-transparent border-white/90"
+        isOpen ? "bg-white border-black" : scrolled ? "bg-white/90 border-white/90" : "bg-transparent border-white/90"
       }`}
     >
       <div className="flex justify-between items-center">
-        <div className="flex items-center">
-          <Logo isOpen={isOpen} scrolled={scrolled} />
+        <Logo isOpen={isOpen} scrolled={scrolled} />
+        <DesktopNav scrolled={scrolled} />
+        <div className="hidden md:flex space-x-4">
+          <AuthButtons scrolled={scrolled} isMobile={false} />
         </div>
-        <DesktopNav scrolled={scrolled} onNavClick={onNavClick} />
-        <DesktopAuthButtons scrolled={scrolled} />
-        <MobileMenuButton isOpen={isOpen} toggleMenu={toggleMenu} scrolled={scrolled} />
+        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden focus:outline-none">
+          <svg
+            className="w-6 h-6 transition-transform duration-300"
+            fill="none"
+            stroke={isOpen || scrolled ? "black" : "white"}
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {isOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
       </div>
-      <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ${
-          isOpen ? "max-h-[500px]" : "max-h-0"
-        }`}
-      >
-        <MobileNav scrolled={scrolled} onNavClick={onNavClick} />
+      <div className={`md:hidden overflow-hidden transition-all duration-300 ${isOpen ? "max-h-[500px]" : "max-h-0"}`}>
+        <MobileNav scrolled={scrolled} />
       </div>
     </nav>
   );
