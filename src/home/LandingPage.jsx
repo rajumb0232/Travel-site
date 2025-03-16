@@ -4,6 +4,9 @@ import Hero from "./Components/Hero";
 import BookYourTrip from "./Components/BookYourTrip";
 import PackageGallery from "./Components/PackageGallery";
 import ServicesSlider from "./Components/ServicesSlider";
+import Gallery from "./Components/Gallery";
+import AboutUs from "./Components/AboutUs";
+import Footer from "./Components/Footer";
 
 const LandingPage = () => {
   const heroRef = useRef(null);
@@ -15,7 +18,7 @@ const LandingPage = () => {
     console.log("scrolling...");
     switch (section) {
       case "hero":
-        heroRef.current?.scrollIntoView({ behavior: "smooth",  });
+        heroRef.current?.scrollIntoView({ behavior: "smooth" });
         break;
       case "book":
         bookYourTripRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -38,6 +41,9 @@ const LandingPage = () => {
       <BookYourTrip ref={bookYourTripRef} onNavClick={scrollToSection} />
       <PackageGallery ref={packagesRef} onNavClick={scrollToSection} />
       <ServicesSlider ref={servicesRef} onNavClick={scrollToSection} />
+      <Gallery />
+      <AboutUs />
+      <Footer />
     </>
   );
 };
