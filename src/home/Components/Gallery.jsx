@@ -61,6 +61,7 @@ const Gallery = () => {
     <section className="py-10 bg-gray-50" id="gallery">
       <div className="container mx-auto text-center">
         <h2 className="text-3xl font-bold mb-6">Gallery</h2>
+        <p className="text-gray-600 max-w-3xl mx-auto mb-10">From serene landscapes to vibrant cityscapes, these snapshots capture the essence of adventure, joy, and discovery. Take a glimpse into the journeys we've guided and get inspired for your next trip with us!</p>
         
         <div 
           className="w-full overflow-x-auto px-4"
