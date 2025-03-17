@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="bg-gray-900 text-white py-6 mt-10 rounded-t-3xl px-4 sm:px-6 md:px-10">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between text-center md:text-left">
         {/* Brand Name */}
-        <h2 className="text-lg font-bold mb-4 md:mb-0">BrandName</h2>
+        <img src="/logo-trip-buddy4.png" alt="Tripbuddy" className="h-10" />
 
         {/* Navigation Links */}
         <div className="flex flex-wrap justify-center md:justify-start space-x-4 sm:space-x-6 text-gray-400 text-sm mb-4 md:mb-0">
@@ -37,7 +37,7 @@ const Footer = () => {
 
       {/* Copyright */}
       <div className="text-center text-gray-500 text-xs sm:text-sm mt-4">
-        &copy; {new Date().getFullYear()} BrandName. All Rights Reserved.
+        &copy; {new Date().getFullYear()} Tripbuddy. All Rights Reserved.
       </div>
     </footer>
   );
