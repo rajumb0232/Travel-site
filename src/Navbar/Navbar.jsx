@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import AuthButtons from "../home/Components/Authbuttons";
 const getTextColor = (scrolled, mobile) => {
   if (mobile) return "text-black hover:text-gray-700";
   return scrolled
@@ -61,19 +61,6 @@ const Logo = ({ isOpen, scrolled }) => (
   />
 );
 
-const AuthButtons = ({ scrolled, isMobile }) => {
-  const baseClass = `border px-4 py-1.5 rounded-lg transition-colors duration-300 w-full md:w-auto`;
-  const dynamicClass = scrolled && !isMobile
-    ? "border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white"
-    : !isMobile
-    ? "border-white text-white hover:bg-white hover:text-gray-800"
-    : "border-transparent text-white bg-gray-800";
-  return ["Login", "Register"].map((btn) => (
-    <button key={btn} className={`${baseClass} ${dynamicClass}`}>
-      {btn}
-    </button>
-  ));
-};
 
 const navItems = {
   Home: { id: "hero", dropdownItems: undefined },
@@ -108,18 +95,18 @@ const DesktopNav = ({ scrolled }) => (
   </ul>
 );
 
-const MobileNav = ({ scrolled }) => (
+const MobileNav = ({ scrolled, askLogout }) => (
   <div className="mt-3 border-t bg-transparent border-black transition-colors duration-300">
     <ul className="flex flex-col space-y-2 p-4">
       <NavLinks scrolled={scrolled} mobile />
     </ul>
     <div className="flex flex-col space-y-2 p-4 border-t">
-      <AuthButtons scrolled={scrolled} isMobile={true} />
+      <AuthButtons scrolled={scrolled} isMobile={true} onLogoutRequest={askLogout}/>
     </div>
   </div>
 );
 
-const Navbar = () => {
+const Navbar = ({askLogout}) => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -144,7 +131,7 @@ const Navbar = () => {
         <Logo isOpen={isOpen} scrolled={scrolled} />
         <DesktopNav scrolled={scrolled} />
         <div className="hidden md:flex space-x-4">
-          <AuthButtons scrolled={scrolled} isMobile={false} />
+          <AuthButtons scrolled={scrolled} isMobile={false} onLogoutRequest={askLogout}/>
         </div>
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -180,7 +167,7 @@ const Navbar = () => {
           isOpen ? "max-h-[500px] rounded" : "max-h-0"
         }`}
       >
-        <MobileNav scrolled={scrolled} />
+        <MobileNav scrolled={scrolled} askLogout={askLogout}/>
       </div>
     </nav>
   );

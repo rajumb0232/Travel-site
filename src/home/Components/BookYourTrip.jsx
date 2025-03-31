@@ -1,7 +1,9 @@
 import React, { forwardRef, useState } from "react";
-import BookingAlert from "./BookingAlert";
+import Alert from "./Alert";
+import { useAlerts } from "../../Context/AppContext";
 
 const BookYourTrip = () => {
+  const { addAlert } = useAlerts();
   const [bookingData, setBookingData] = useState({
     destination: "",
     persons: "",
@@ -9,7 +11,6 @@ const BookYourTrip = () => {
     endDate: "",
     description: "",
   });
-  const [showBookingAlert, setShowBookingAlert] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -23,8 +24,10 @@ const BookYourTrip = () => {
     if (!validateInput()) {
       alert("Please fill in all the fields.");
     } else {
-      console.log("Booking submitted:", bookingData);
-      setShowBookingAlert(true);
+      addAlert({
+        title: "Booking Confirmed",
+        message: "Thanks for booking with us, we'll contact you soon!!",
+      });
     }
   };
 
@@ -35,10 +38,6 @@ const BookYourTrip = () => {
 
   return (
     <section className="max-w-6xl mx-auto p-4 sm:p-6 my-10" id="book">
-      {showBookingAlert && (
-        <BookingAlert onClose={() => setShowBookingAlert(false)} />
-      )}
-
       <div className="py-5 flex flex-col lg:flex-row rounded-lg overflow-hidden">
         <div className="w-full lg:w-1/2 mb-5">
           <img

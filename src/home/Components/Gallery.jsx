@@ -20,6 +20,7 @@ const images = [
 
 const Gallery = () => {
   const [loadedImages, setLoadedImages] = useState([]);
+  const [loading, setLoading] = useState(true);
   const maxContainerHeight = 500; // Maximum height for the container
 
   useEffect(() => {
@@ -32,18 +33,18 @@ const Gallery = () => {
             img.onload = () => {
               // Calculate aspect ratio to maintain proportions
               const aspectRatio = img.width / img.height;
-              
+
               // Base width for all images
               const baseWidth = 200;
-              
+
               // Height based on aspect ratio
               const height = baseWidth / aspectRatio;
-              
+
               resolve({
                 src,
                 width: baseWidth,
                 height,
-                aspectRatio
+                aspectRatio,
               });
             };
             img.src = src;
@@ -52,6 +53,7 @@ const Gallery = () => {
 
       const loadedImagesData = await Promise.all(imagePromises);
       setLoadedImages(loadedImagesData);
+      setLoading(false);
     };
 
     preloadImages();
@@ -61,39 +63,49 @@ const Gallery = () => {
     <section className="py-10 bg-gray-50" id="gallery">
       <div className="container mx-auto text-center">
         <h2 className="text-3xl font-bold mb-6">Gallery</h2>
-        <p className="text-gray-600 max-w-3xl mx-auto mb-10">From serene landscapes to vibrant cityscapes, these snapshots capture the essence of adventure, joy, and discovery. Take a glimpse into the journeys we've guided and get inspired for your next trip with us!</p>
-        
-        <div 
+        <p className="text-gray-600 max-w-3xl mx-auto mb-10">
+          From serene landscapes to vibrant cityscapes, these snapshots capture
+          the essence of adventure, joy, and discovery. Take a glimpse into the
+          journeys we've guided and get inspired for your next trip with us!
+        </p>
+
+        <div
           className="w-full overflow-x-auto px-4"
-          style={{ WebkitOverflowScrolling: 'touch' }}
+          style={{ WebkitOverflowScrolling: "touch" }}
         >
-          <div 
-            className="flex flex-col flex-wrap gap-y-4 gap-x-8 p-4"
-            style={{ 
-              height: `${maxContainerHeight}px`,
-              width: 'max-content',
-              alignContent: 'flex-start' 
-            }}
-          >
-            {loadedImages.map((img, index) => (
-              <div 
-                key={index} 
-                className="overflow-hidden rounded-lg shadow-lg"
-                style={{ 
-                  width: `${img.width}px`,
-                  height: `${img.height}px`,
-                  flexGrow: 0, 
-                  flexShrink: 0 
-                }}
-              >
-                <img
-                  src={img.src}
-                  alt={`Gallery ${index + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                />
-              </div>
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          ) : (
+            <div
+              className="flex flex-col flex-wrap gap-y-4 gap-x-8 p-4"
+              style={{
+                height: `${maxContainerHeight}px`,
+                width: "max-content",
+                alignContent: "flex-start",
+              }}
+            >
+              {loadedImages.map((img, index) => (
+                <div
+                  key={index}
+                  className="overflow-hidden rounded-lg shadow-lg"
+                  style={{
+                    width: `${img.width}px`,
+                    height: `${img.height}px`,
+                    flexGrow: 0,
+                    flexShrink: 0,
+                  }}
+                >
+                  <img
+                    src={img.src}
+                    alt={`Gallery ${index + 1}`}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
