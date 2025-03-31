@@ -28,11 +28,8 @@ const Hero = () => {
         <h1 className="text-5xl md:text-8xl font-bold text-white mb-4">
           Visit {countries[currentCountryIndex]}
         </h1>
-        <button
-          className="mt-8 bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition-colors"
-          onClick={() => onNavClick("book")}
-        >
-          Book Now
+        <button className="mt-8 bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition-colors">
+          <a href="#book">Book Now</a>
         </button>
       </div>
     </div>
